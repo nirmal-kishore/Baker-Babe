@@ -5,6 +5,7 @@ import Image from 'next/image'
 import { motion } from 'motion/react'
 import { Clock, MapPin, Users, Award, CheckCircle, Send } from 'lucide-react'
 import { submitToWeb3Forms } from '@/lib/web3forms'
+import { cakeImages } from '@/lib/cakeImages'
 
 const overviewItems = [
   { icon: Clock, title: 'Duration', value: '3-4 Hours' },
@@ -66,7 +67,7 @@ export default function WorkshopPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -40 }}
@@ -101,7 +102,7 @@ export default function WorkshopPage() {
             transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Image
-              src="/workshop-1.jpg"
+              src={cakeImages.workshop[0]}
               alt="Cake decorating workshop"
               width={600}
               height={500}
@@ -152,8 +153,10 @@ export default function WorkshopPage() {
       </section>
 
       {/* What's Included */}
-      <section className="bg-baker-soft-pink py-20">
-        <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
+      <section className="py-12 lg:py-16">
+        <div className="max-w-7xl mx-auto px-4">
+          <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 lg:px-16 lg:py-16 shadow-sm">
+            <div className="grid lg:grid-cols-2 gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -161,7 +164,7 @@ export default function WorkshopPage() {
             transition={{ duration: 0.5 }}
           >
             <Image
-              src="/workshop-2.jpg"
+              src={cakeImages.workshop[1]}
               alt="A Baker Babe workshop in progress"
               width={600}
               height={500}
@@ -194,6 +197,8 @@ export default function WorkshopPage() {
               ))}
             </ul>
           </motion.div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -332,8 +337,9 @@ export default function WorkshopPage() {
       </section>
 
       {/* Past Workshop Gallery */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4">
+          <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 lg:px-16 lg:py-16 shadow-sm">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -350,7 +356,7 @@ export default function WorkshopPage() {
           </motion.div>
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
-            {['/workshop-1.jpg', '/workshop-2.jpg', '/workshop-3.jpg'].map((src, index) => (
+            {cakeImages.workshop.map((src, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, scale: 0.9 }}
@@ -363,11 +369,13 @@ export default function WorkshopPage() {
                   src={src}
                   alt={`Workshop gallery image ${index + 1}`}
                   fill
+                  sizes="(max-width: 640px) 100vw, 33vw"
                   className="rounded-2xl object-cover"
                   unoptimized
                 />
               </motion.div>
             ))}
+          </div>
           </div>
         </div>
       </section>

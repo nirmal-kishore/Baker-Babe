@@ -98,7 +98,7 @@ export default function MenuPage() {
   return (
     <main>
       {/* ─── Hero ─── */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <p className="text-baker-pink text-sm tracking-wider uppercase font-semibold">
             Our Menu
@@ -172,8 +172,9 @@ export default function MenuPage() {
       </section>
 
       {/* ─── Brownie Menu ─── */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4">
+        <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 lg:px-14 lg:py-14 shadow-sm">
           <motion.div {...fadeUp} className="text-center mb-14">
             <p className="text-baker-pink text-sm tracking-wider uppercase font-semibold">
               · Freshly Baked ·
@@ -218,6 +219,7 @@ export default function MenuPage() {
             ))}
           </div>
         </div>
+        </div>
       </section>
 
       {/* ─── Terms & Conditions ─── */}
@@ -253,8 +255,9 @@ export default function MenuPage() {
       </section>
 
       {/* ─── CTA ─── */}
-      <section className="bg-baker-soft-pink py-16 text-center">
-        <div className="max-w-7xl mx-auto px-4">
+      <section className="py-12 lg:py-16">
+        <div className="max-w-4xl mx-auto px-4">
+        <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 text-center shadow-sm">
           <h2 className="font-playfair text-3xl font-bold text-baker-dark">
             Ready to order your favourite?
           </h2>
@@ -279,6 +282,7 @@ export default function MenuPage() {
               Enquire on Instagram
             </a>
           </div>
+        </div>
         </div>
       </section>
     </main>

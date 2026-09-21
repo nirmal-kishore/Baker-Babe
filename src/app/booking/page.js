@@ -66,7 +66,7 @@ export default function BookingPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

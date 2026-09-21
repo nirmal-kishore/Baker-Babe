@@ -188,10 +188,10 @@ export default function Footer() {
               <li className="flex items-start gap-3">
                 <Mail size={18} className="text-baker-pink mt-0.5 shrink-0" />
                 <a
-                  href="mailto:hello@bakerbabe.com.au"
+                  href="mailto:bakerbabe@gmail.com"
                   className="text-sm text-gray-600 hover:text-baker-pink transition"
                 >
-                  hello@bakerbabe.com.au
+                  bakerbabe@gmail.com
                 </a>
               </li>
               <li className="flex items-start gap-3">
@@ -200,7 +200,9 @@ export default function Footer() {
                   className="text-baker-pink mt-0.5 shrink-0"
                 />
                 <span className="text-sm text-gray-600">
-                  Melbourne, Victoria, Australia
+                  Hopper Crossing, Melbourne
+                  <br />
+                  Servicing all over Melbourne
                 </span>
               </li>
             </ul>
@@ -213,7 +215,7 @@ export default function Footer() {
         {/* ── Bottom bar ── */}
         <div className="flex justify-between items-center flex-wrap gap-4">
           <p className="text-xs text-gray-500">
-            © 2024 Baker Babe. All rights reserved.
+            © 2025 Baker Babe. All rights reserved. · ABN 58 631 282 355
           </p>
 
           <nav className="flex items-center gap-4">
@@ -246,7 +248,7 @@ export default function Footer() {
 
         {/* ── Final tagline ── */}
         <p className="text-sm text-gray-400 text-center mt-4">
-          Handmade With Love ♡ Especially For You
+          Cakes Made With Love ♡ Especially For You
         </p>
       </div>
     </footer>

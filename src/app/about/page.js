@@ -5,6 +5,7 @@ import { useRef, useEffect, useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Award, Users, Clock, Star } from 'lucide-react';
+import { cakeImages } from '@/lib/cakeImages';
 
 function CountUp({ target, suffix = '', duration = 2000 }) {
   const [count, setCount] = useState(0);
@@ -75,7 +76,7 @@ export default function AboutPage() {
   return (
     <main>
       {/* Section 1: About Hero */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 grid lg:grid-cols-2 gap-16 items-center">
           {/* Left - Text */}
           <motion.div
@@ -108,8 +109,8 @@ export default function AboutPage() {
           >
             <div className="rounded-3xl overflow-hidden shadow-lg">
               <Image
-                src="/cake-corporate.jpg"
-                alt="A signature Baker Babe corporate cake"
+                src={cakeImages.wedding[1]}
+                alt="A signature Baker Babe cake"
                 width={600}
                 height={700}
                 className="w-full h-auto object-cover"
@@ -132,11 +133,12 @@ export default function AboutPage() {
           >
             <div className="rounded-3xl overflow-hidden aspect-[3/4]">
               <Image
-                src="/cake-placeholder.jpg"
-                alt="Shreya — Founder of Baker Babe"
+                src={cakeImages.custom[5]}
+                alt="A handcrafted Baker Babe creation"
                 width={500}
                 height={667}
                 className="w-full h-full object-cover"
+                unoptimized
               />
             </div>
           </motion.div>
@@ -156,29 +158,32 @@ export default function AboutPage() {
             </h2>
             <div className="mt-6 space-y-4 text-gray-600 leading-relaxed">
               <p>
-                It all started in a tiny Melbourne kitchen, with a borrowed mixer and
-                a big dream. As a young girl, Shreya spent countless hours watching
-                her grandmother transform simple ingredients into extraordinary
-                creations. That childhood wonder never faded — it only grew stronger.
+                What started as a random cake-making workshop in my early 20s soon
+                turned into a beautiful journey of curiosity, creativity, and
+                learning. That little workshop sparked my interest to learn more,
+                explore new techniques, and turn my ideas into something beautiful
+                through cakes.
               </p>
               <p>
-                After years of perfecting her craft, experimenting with flavours from
-                around the world, and turning friends&apos; birthdays into unforgettable
-                celebrations, Shreya took the leap and founded Baker Babe. What began
-                as a home-based passion project quickly blossomed into one of
-                Melbourne&apos;s most loved custom cake studios.
+                I then pursued a Diploma in Baking &amp; Patisserie in Mumbai and,
+                right after completing the course, started putting my skills into
+                practice. With every cake I created, I discovered something new — a
+                new technique, a new challenge, a new creative idea, and a new skill.
+                What began as curiosity slowly became a passion, and every step of
+                the journey has taught me so much more.
               </p>
               <p>
-                Every cake that leaves our kitchen carries Shreya&apos;s philosophy:
-                baking is an act of love. We never use artificial preservatives,
-                every detail is hand-finished, and every design begins with truly
-                listening to our customers&apos; stories and dreams.
+                My fascination for baking and learning grew with every new order, and
+                my love for feeding people led me to where I am now. Today, Baker Babe
+                is based in Melbourne, creating custom bakes for celebrations all
+                across the city.
               </p>
               <p>
-                Today, Baker Babe is more than a bakery — it&apos;s a place where
-                celebrations come to life, where flavours meet artistry, and where
-                every slice brings a smile. Whether it&apos;s a towering wedding cake or
-                a simple birthday treat, we pour our heart into every creation.
+                And I&apos;m still learning, creating, experimenting, and falling in
+                love with the art of cakes every day. Every order is built personally
+                for you and crafted with all the love — we feed you exactly what we
+                feed our family, so the best quality of ingredients and the most
+                amount of love goes into your every single order.
               </p>
             </div>
           </motion.div>
@@ -186,8 +191,9 @@ export default function AboutPage() {
       </section>
 
       {/* Section 3: Brand Values */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4">
+          <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 lg:px-16 lg:py-16 shadow-sm">
           <div className="text-center">
             <p className="text-baker-pink text-sm tracking-wider uppercase font-semibold">
               · WHAT WE BELIEVE ·
@@ -221,6 +227,7 @@ export default function AboutPage() {
                 </motion.div>
               );
             })}
+          </div>
           </div>
         </div>
       </section>

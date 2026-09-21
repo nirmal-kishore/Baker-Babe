@@ -35,13 +35,13 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'hello@bakerbabe.com.au',
-    href: 'mailto:hello@bakerbabe.com.au',
+    value: 'bakerbabe@gmail.com',
+    href: 'mailto:bakerbabe@gmail.com',
   },
   {
     icon: MapPin,
-    title: 'Address',
-    value: 'Melbourne, Victoria, Australia',
+    title: 'Location',
+    value: 'Hopper Crossing, Melbourne — servicing all over Melbourne',
     href: null,
   },
   {
@@ -99,7 +99,7 @@ export default function ContactPage() {
   return (
     <main>
       {/* Hero Section */}
-      <section className="bg-baker-soft-pink py-20">
+      <section className="py-20">
         <div className="max-w-7xl mx-auto px-4 text-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

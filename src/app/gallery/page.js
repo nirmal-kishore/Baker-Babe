@@ -1,63 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'motion/react';
-import { Heart, Camera, ShoppingBag, ArrowRight } from 'lucide-react';
+import { Camera, ShoppingBag } from 'lucide-react';
+import { galleryItems, galleryCategories, cakeImages } from '@/lib/cakeImages';
 
-const categories = ['All Cakes', 'Birthday', 'Wedding', 'Custom Cakes', 'Party', 'Festive', 'Corporate'];
 
-const galleryItems = [
-  { id: 1, title: 'Blush Romance', category: 'Wedding', image: '/cake-wedding.jpg' },
-  { id: 2, title: 'Choco Indulgence', category: 'Birthday', image: '/cake-birthday-1.jpg' },
-  { id: 3, title: 'Magical Unicorn', category: 'Birthday', image: '/cake-birthday-2.jpg' },
-  { id: 4, title: 'Timeless Elegance', category: 'Wedding', image: '/cake-wedding.jpg' },
-  { id: 5, title: 'Garden Bloom', category: 'Custom Cakes', image: '/cake-custom-1.jpg' },
-  { id: 6, title: 'Cookies & Cream', category: 'Party', image: '/cake-party.jpg' },
-  { id: 7, title: 'Golden Chocolate', category: 'Festive', image: '/cake-festive.jpg' },
-  { id: 8, title: 'Cherry Bliss', category: 'Birthday', image: '/cake-birthday-1.jpg' },
-  { id: 9, title: 'Little Hero', category: 'Birthday', image: '/cake-birthday-2.jpg' },
-  { id: 10, title: 'Boho Dream', category: 'Custom Cakes', image: '/cake-custom-2.jpg' },
-  { id: 11, title: 'Christmas Joy', category: 'Festive', image: '/cake-festive.jpg' },
-  { id: 12, title: 'Corporate Delight', category: 'Corporate', image: '/cake-corporate.jpg' },
-];
+function GalleryContent() {
+  const searchParams = useSearchParams();
+  // Initial filter comes from ?category= in the URL (e.g. from the Home "Explore" links).
+  const categoryParam = searchParams.get('category');
+  const initialFilter = galleryCategories.some((c) => c.key === categoryParam)
+    ? categoryParam
+    : 'all';
+  const [activeFilter, setActiveFilter] = useState(initialFilter);
 
-const signatureSpecials = [
-  {
-    title: 'Rosy Elegance',
-    subtitle: 'A timeless favourite for every celebration.',
-  },
-  {
-    title: 'Chocolate Royale',
-    subtitle: 'Rich. Decadent. Unforgettable.',
-  },
-  {
-    title: 'Berry Beautiful',
-    subtitle: 'A fresh take on classic indulgence.',
-  },
-];
-
-export default function GalleryPage() {
-  const [activeFilter, setActiveFilter] = useState('All Cakes');
-  const [favorites, setFavorites] = useState(new Set());
-
-  const filteredItems =
-    activeFilter === 'All Cakes'
-      ? galleryItems
-      : galleryItems.filter((item) => item.category === activeFilter);
-
-  const toggleFavorite = (id) => {
-    setFavorites((prev) => {
-      const next = new Set(prev);
-      if (next.has(id)) {
-        next.delete(id);
-      } else {
-        next.add(id);
-      }
-      return next;
+  // "All Cakes" shows a curated 3 per category; a specific filter shows all of that category.
+  let filteredItems;
+  if (activeFilter === 'all') {
+    const counts = {};
+    filteredItems = galleryItems.filter((item) => {
+      counts[item.category] = (counts[item.category] || 0) + 1;
+      return counts[item.category] <= 3;
     });
-  };
+  } else {
+    filteredItems = galleryItems.filter((item) => item.category === activeFilter);
+  }
 
   return (
     <main>
@@ -91,20 +62,14 @@ export default function GalleryPage() {
           {/* Right */}
           <div className="relative">
             <Image
-              src="/hero-cake.jpg"
+              src={cakeImages.birthday[1]}
               alt="Baker Babe gallery showcase"
-              width={1254}
-              height={1254}
-              className="rounded-2xl aspect-square object-contain w-full"
+              width={1122}
+              height={1402}
+              className="rounded-2xl aspect-[4/5] object-cover w-full"
               priority
               unoptimized
             />
-            <span className="absolute top-6 right-6 font-script text-2xl text-baker-pink rotate-[-8deg]">
-              More Than Just Cakes ♡
-            </span>
-            <span className="absolute bottom-4 right-4 text-[10px] tracking-wider uppercase bg-white/80 backdrop-blur px-3 py-2 rounded-lg">
-              SWEET PEOPLE BRIGHTER DAYS
-            </span>
           </div>
         </div>
       </motion.section>
@@ -112,17 +77,17 @@ export default function GalleryPage() {
       {/* ─── Section 2: Interactive Category Filter Bar ─── */}
       <div className="max-w-7xl mx-auto px-4 py-12">
         <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {categories.map((cat) => (
+          {galleryCategories.map((cat) => (
             <button
-              key={cat}
-              onClick={() => setActiveFilter(cat)}
+              key={cat.key}
+              onClick={() => setActiveFilter(cat.key)}
               className={`whitespace-nowrap rounded-full px-6 py-2 text-sm font-medium transition ${
-                activeFilter === cat
+                activeFilter === cat.key
                   ? 'bg-baker-pink text-white'
                   : 'bg-white border border-gray-200 text-baker-dark hover:border-baker-pink hover:text-baker-pink'
               }`}
             >
-              {cat}
+              {cat.label}
             </button>
           ))}
         </div>
@@ -148,97 +113,30 @@ export default function GalleryPage() {
                 viewport={{ once: true, amount: 0.1 }}
                 whileHover={{ scale: 1.03, boxShadow: '0 10px 40px rgba(0,0,0,0.1)' }}
                 transition={{ duration: 0.3 }}
-                className="cursor-pointer"
               >
-                <Image
-                  src={item.image}
-                  alt={item.title}
-                  width={500}
-                  height={650}
-                  className="rounded-2xl aspect-[3/4] object-cover w-full"
-                  unoptimized
-                />
-                <div className="flex justify-between items-start pt-3">
-                  <div>
-                    <p className="font-semibold text-sm">{item.title}</p>
-                    <p className="text-xs uppercase tracking-wider text-gray-500">
-                      {item.category}
-                    </p>
-                  </div>
-                  <button
-                    onClick={() => toggleFavorite(item.id)}
-                    className="mt-0.5 transition"
-                    aria-label={`Toggle favourite for ${item.title}`}
-                  >
-                    <Heart
-                      size={18}
-                      className={
-                        favorites.has(item.id)
-                          ? 'fill-baker-pink text-baker-pink'
-                          : 'text-gray-300 hover:text-baker-pink'
-                      }
-                    />
-                  </button>
+                <div className="relative rounded-2xl overflow-hidden">
+                  <Image
+                    src={item.src}
+                    alt={`${item.label} cake by Baker Babe`}
+                    width={500}
+                    height={650}
+                    className="aspect-[3/4] object-cover w-full"
+                    unoptimized
+                  />
                 </div>
+                <p className="text-xs uppercase tracking-wider text-gray-500 pt-3">
+                  {item.label}
+                </p>
               </motion.div>
             ))}
           </motion.div>
         </AnimatePresence>
       </div>
 
-      {/* ─── Section 4: Signature Specials ─── */}
-      <motion.section
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
-        transition={{ duration: 0.7 }}
-        className="max-w-7xl mx-auto px-4 py-20"
-      >
-        <div className="grid lg:grid-cols-2 gap-16 items-center">
-          {/* Left */}
-          <div>
-            <span className="text-baker-pink text-sm font-semibold tracking-wider uppercase">
-              · FEATURED CREATIONS ·
-            </span>
-            <h2 className="font-playfair text-4xl lg:text-5xl font-bold italic mt-3">
-              Signature Specials
-            </h2>
-            <p className="text-gray-600 mt-4 leading-relaxed">
-              A closer look at some of our most-loved creations, crafted with extra
-              care and a touch of magic.
-            </p>
-            <Link
-              href="/menu"
-              className="bg-baker-pink text-white px-8 py-3 rounded-full hover:bg-baker-pink-hover inline-flex items-center gap-2 font-semibold text-sm mt-4 transition"
-            >
-              View Full Menu <ArrowRight size={16} />
-            </Link>
-          </div>
-
-          {/* Right */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-            {signatureSpecials.map((item) => (
-              <div key={item.title}>
-                <Image
-                  src="/cake-placeholder.jpg"
-                  alt={item.title}
-                  width={300}
-                  height={400}
-                  className="rounded-2xl aspect-[3/4] object-cover w-full"
-                />
-                <h3 className="font-playfair font-bold text-lg mt-3">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-gray-500">{item.subtitle}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </motion.section>
-
       {/* ─── Section 5: Instagram Grid ─── */}
-      <section className="bg-baker-soft-pink py-20 mt-16">
+      <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4">
+          <div className="bg-baker-soft-pink rounded-[2.5rem] px-6 py-12 lg:px-16 lg:py-16 shadow-sm">
           <div className="grid lg:grid-cols-[1fr_2fr] gap-12 items-center">
             {/* Left */}
             <div>
@@ -265,34 +163,52 @@ export default function GalleryPage() {
 
             {/* Right */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-              {[1, 2, 3].map((i) => (
-                <Image
+              {[cakeImages.festive[0], cakeImages.corporate[0], cakeImages['baby-shower'][0]].map((src, i) => (
+                <a
                   key={i}
-                  src="/cake-placeholder.jpg"
-                  alt={`Instagram post ${i}`}
-                  width={200}
-                  height={200}
-                  className="rounded-xl aspect-square object-cover w-full"
-                  unoptimized
-                />
+                  href="https://www.instagram.com/baker_babe27/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View Baker Babe on Instagram"
+                  className="block rounded-xl overflow-hidden aspect-square group"
+                >
+                  <Image
+                    src={src}
+                    alt={`Instagram post ${i + 1}`}
+                    width={200}
+                    height={200}
+                    className="rounded-xl aspect-square object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                    unoptimized
+                  />
+                </a>
               ))}
-              <div className="bg-baker-pink/10 rounded-xl aspect-square flex items-center justify-center p-4">
-                <p className="font-script text-lg lg:text-xl text-baker-pink text-center">
-                  Happiness Looks Good On You ♡
-                </p>
-              </div>
-              <div className="bg-gradient-to-br from-baker-pink to-baker-pink-hover rounded-xl aspect-square flex items-center justify-center p-4">
-                <p className="font-script text-xl lg:text-2xl text-white text-center">
-                  Good Cakes = Happier People ♡
-                </p>
-              </div>
+              {[cakeImages.custom[1], cakeImages.corporate[2]].map((src, i) => (
+                <a
+                  key={`ig-extra-${i}`}
+                  href="https://www.instagram.com/baker_babe27/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="View Baker Babe on Instagram"
+                  className="block rounded-xl overflow-hidden aspect-square group"
+                >
+                  <Image
+                    src={src}
+                    alt={`Instagram post ${i + 4}`}
+                    width={200}
+                    height={200}
+                    className="rounded-xl aspect-square object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
+                    unoptimized
+                  />
+                </a>
+              ))}
             </div>
+          </div>
           </div>
         </div>
       </section>
 
       {/* ─── Section 6: Custom Cake CTA Banner ─── */}
-      <section className="bg-baker-soft-pink py-16 mt-0">
+      <section className="py-12 lg:py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="bg-gradient-to-r from-baker-pink/5 to-baker-soft-pink rounded-3xl p-8 lg:p-12 flex flex-col lg:flex-row justify-between items-center gap-8">
             {/* Left */}
@@ -321,5 +237,13 @@ export default function GalleryPage() {
         </div>
       </section>
     </main>
+  );
+}
+
+export default function GalleryPage() {
+  return (
+    <Suspense fallback={null}>
+      <GalleryContent />
+    </Suspense>
   );
 }
