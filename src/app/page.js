@@ -136,7 +136,7 @@ export default function Home() {
       >
         {/* Desktop-only full-bleed banner background (overlay layout) */}
         <Image
-          src="/hero-cake-bg2.jpg"
+          src="/hero-cake-bg2.png"
           alt=""
           fill
           sizes="100vw"
@@ -301,8 +301,8 @@ export default function Home() {
           {/* Left — Image */}
           <div className="relative">
             <Image
-              src={cakeImages.custom[3]}
-              alt="A signature Baker Babe creation"
+              src="/bakerbabe.png"
+              alt="Shreya, founder of Baker Babe"
               width={600}
               height={600}
               className="rounded-3xl aspect-square object-cover w-full"

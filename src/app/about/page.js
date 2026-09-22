@@ -133,8 +133,8 @@ export default function AboutPage() {
           >
             <div className="rounded-3xl overflow-hidden aspect-[3/4]">
               <Image
-                src={cakeImages.custom[5]}
-                alt="A handcrafted Baker Babe creation"
+                src="/bakerbabe.png"
+                alt="Shreya, founder of Baker Babe"
                 width={500}
                 height={667}
                 className="w-full h-full object-cover"
