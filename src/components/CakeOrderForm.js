@@ -3,8 +3,14 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Calendar, Cake, CheckCircle, ShoppingBag, User } from 'lucide-react'
+import { Calendar, Cake, CheckCircle, ShoppingBag, User, ImagePlus, X, Loader2 } from 'lucide-react'
 import { submitToWeb3Forms } from '@/lib/web3forms'
+import { uploadToCloudinary } from '@/lib/cloudinary'
+
+// Web3Forms free plan caps attachments at ~5 MB. We validate client-side so the
+// user gets a friendly message instead of a server rejection.
+const MAX_IMAGE_BYTES = 5 * 1024 * 1024 // 5 MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif']
 
 /**
  * The Baker Babe cake order form, extracted so it can be rendered both on the
@@ -52,6 +58,48 @@ export default function CakeOrderForm() {
   const [submitting, setSubmitting] = useState(false)
   const [error, setError] = useState('')
 
+  // Reference image attachment (optional). Sent to Web3Forms as a file so it
+  // arrives as an attachment on the order email.
+  const [imageFile, setImageFile] = useState(null)
+  const [imagePreview, setImagePreview] = useState('')
+  const [imageName, setImageName] = useState('')
+  const [imageError, setImageError] = useState('')
+  const [uploading, setUploading] = useState(false)
+
+  const handleImageSelect = (e) => {
+    const file = e.target.files?.[0]
+    // Allow re-selecting the same file later by clearing the input value.
+    e.target.value = ''
+    if (!file) return
+
+    setImageError('')
+
+    if (!file.type.startsWith('image/')) {
+      setImageError('Please choose an image file (JPG, PNG, WEBP, or HEIC).')
+      return
+    }
+    if (file.size > MAX_IMAGE_BYTES) {
+      const mb = (MAX_IMAGE_BYTES / (1024 * 1024)).toFixed(0)
+      setImageError(
+        `That image is ${(file.size / (1024 * 1024)).toFixed(1)} MB — please choose one under ${mb} MB.`,
+      )
+      return
+    }
+
+    if (imagePreview) URL.revokeObjectURL(imagePreview)
+    setImageFile(file)
+    setImagePreview(URL.createObjectURL(file))
+    setImageName(file.name)
+  }
+
+  const handleRemoveImage = () => {
+    if (imagePreview) URL.revokeObjectURL(imagePreview)
+    setImageFile(null)
+    setImagePreview('')
+    setImageName('')
+    setImageError('')
+  }
+
   const handleChange = (e) => {
     const { name, value } = e.target
     // Contact number: allow only digits, spaces, and + - ( ) so letters can't be typed.
@@ -80,7 +128,22 @@ export default function CakeOrderForm() {
     setSubmitting(true)
     setError('')
     try {
-      const { success, message } = await submitToWeb3Forms({
+      // If a reference image is attached, upload it to Cloudinary first and
+      // include the resulting URL in the order email (inline preview + link).
+      let imageUrl = ''
+      if (imageFile) {
+        setUploading(true)
+        const upload = await uploadToCloudinary(imageFile)
+        setUploading(false)
+        if (!upload.success) {
+          setError(upload.message || 'Could not upload the reference image. Please try again.')
+          setSubmitting(false)
+          return
+        }
+        imageUrl = upload.url
+      }
+
+      const payload = {
         subject: 'New Cake Order — Baker Babe',
         from_name: 'Baker Babe Website',
         'Full Name': formData.fullName,
@@ -93,7 +156,13 @@ export default function CakeOrderForm() {
         'Design / Theme Details': formData.designDetails,
         'Allergies / Dietary Requirements': formData.allergies,
         'Message on the Cake': formData.cakeMessage,
-      })
+        // Clickable link to the full-resolution reference image on Cloudinary.
+        // (Web3Forms' free plan sends plain-text emails, so a link is used
+        // rather than an inline <img>, which would not render.)
+        'Reference Image': imageUrl || 'None provided',
+      }
+
+      const { success, message } = await submitToWeb3Forms(payload)
       if (success) {
         setSubmitted(true)
       } else {
@@ -367,6 +436,87 @@ export default function CakeOrderForm() {
             </div>
           </div>
 
+          {/* Section D: Reference Photo */}
+          <div>
+            <div className="flex items-center gap-3 mb-6">
+              <div className="w-10 h-10 bg-baker-soft-pink rounded-full flex items-center justify-center">
+                <ImagePlus className="w-5 h-5 text-baker-pink" />
+              </div>
+              <h2 className="font-playfair text-2xl font-bold text-baker-dark">
+                Reference Photo
+              </h2>
+            </div>
+
+            <label className="block text-sm font-medium text-baker-dark mb-2">
+              Have a design in mind? Attach a reference picture{' '}
+              <span className="text-gray-400 font-normal">(optional)</span>
+            </label>
+
+            {imagePreview ? (
+              // Preview state: thumbnail + filename + remove
+              <div className="flex items-center gap-4 border border-gray-200 rounded-2xl p-4">
+                <div className="relative w-20 h-20 shrink-0 rounded-xl overflow-hidden bg-baker-cream">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={imagePreview}
+                    alt="Reference cake preview"
+                    className="w-full h-full object-cover"
+                  />
+                  {uploading && (
+                    <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                      <Loader2 className="w-6 h-6 text-white animate-spin" />
+                    </div>
+                  )}
+                </div>
+                <div className="min-w-0 flex-1">
+                  <p className="text-sm font-medium text-baker-dark truncate">{imageName}</p>
+                  <p className="text-xs mt-0.5">
+                    {uploading ? (
+                      <span className="text-gray-500">Uploading…</span>
+                    ) : (
+                      <span className="text-green-600">Ready to send ✓</span>
+                    )}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleRemoveImage}
+                  className="shrink-0 inline-flex items-center gap-1 text-sm text-gray-500 hover:text-red-500 transition"
+                  aria-label="Remove reference photo"
+                >
+                  <X className="w-4 h-4" />
+                  Remove
+                </button>
+              </div>
+            ) : (
+              // Empty state: styled dropzone / file picker
+              <label
+                htmlFor="referenceImage"
+                className="flex flex-col items-center justify-center gap-2 border-2 border-dashed border-gray-200 rounded-2xl px-6 py-10 text-center cursor-pointer hover:border-baker-pink hover:bg-baker-soft-pink/30 transition"
+              >
+                <ImagePlus className="w-8 h-8 text-baker-pink" />
+                <span className="text-sm font-medium text-baker-dark">
+                  Click to attach an image
+                </span>
+                <span className="text-xs text-gray-400">
+                  JPG, PNG, WEBP or HEIC — up to 5 MB
+                </span>
+                <input
+                  type="file"
+                  id="referenceImage"
+                  name="referenceImage"
+                  accept="image/*"
+                  onChange={handleImageSelect}
+                  className="hidden"
+                />
+              </label>
+            )}
+
+            {imageError && (
+              <p className="text-red-500 text-sm mt-2">{imageError}</p>
+            )}
+          </div>
+
           {/* Submit */}
           <div>
             {error && (
@@ -376,11 +526,11 @@ export default function CakeOrderForm() {
             )}
             <button
               type="submit"
-              disabled={submitting}
+              disabled={submitting || uploading}
               className="bg-baker-pink text-white w-full py-4 rounded-full font-semibold text-lg hover:bg-baker-pink-hover transition flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <ShoppingBag className="w-5 h-5" />
-              {submitting ? 'Submitting...' : 'Submit Cake Order'}
+              {uploading ? 'Uploading image…' : submitting ? 'Submitting...' : 'Submit Cake Order'}
             </button>
             <p className="text-gray-500 text-sm text-center mt-4">
               By submitting this form, Baker Babe will review your order and get back to you
