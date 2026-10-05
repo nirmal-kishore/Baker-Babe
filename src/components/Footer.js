@@ -234,12 +234,12 @@ export default function Footer() {
         <hr className="border-gray-200 my-8" />
 
         {/* ── Bottom bar ── */}
-        <div className="flex justify-between items-center flex-wrap gap-4">
-          <p className="text-xs text-gray-500">
-            © 2025 Baker Babe. All rights reserved. · ABN 58 631 282 355
+        <div className="flex flex-col md:flex-row items-center gap-4">
+          <p className="text-xs text-gray-500 text-center md:text-left md:flex-1">
+            © {new Date().getFullYear()} Baker Babe. All rights reserved. · ABN 58 631 282 355
           </p>
 
-          <nav className="flex items-center gap-4">
+          <nav className="flex items-center justify-center gap-4 flex-wrap md:flex-1">
             {bottomNavLinks.map(({ label, href }) => (
               <Link
                 key={label}
@@ -251,7 +251,7 @@ export default function Footer() {
             ))}
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center justify-center md:justify-end gap-3 md:flex-1">
             {socialLinks.slice(0, 3).map(({ label, href, icon: Icon }) => (
               <a
                 key={label}
@@ -270,6 +270,11 @@ export default function Footer() {
         {/* ── Final tagline ── */}
         <p className="text-sm text-gray-400 text-center mt-4">
           Cakes Made With Love ♡ Especially For You
+        </p>
+
+        {/* ── Design credit ── */}
+        <p className="text-xs text-gray-400 text-center mt-2">
+          Designed by <span className="font-semibold text-baker-pink">Mureta</span>
         </p>
       </div>
     </footer>
