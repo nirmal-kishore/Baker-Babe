@@ -12,6 +12,30 @@ import { submitToWeb3Forms } from '@/lib/web3forms'
  * card only — surrounding section/hero layout is owned by each page.
  */
 export default function CakeOrderForm() {
+  // Baker Babe operates in Melbourne, Australia. Compute "now" in Melbourne
+  // (Australia/Melbourne handles AEST/AEDT daylight saving automatically) so
+  // past dates/times are blocked regardless of the visitor's own timezone.
+  const melbourneNow = () => {
+    const parts = new Intl.DateTimeFormat('en-CA', {
+      timeZone: 'Australia/Melbourne',
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).formatToParts(new Date())
+    const get = (type) => parts.find((p) => p.type === type)?.value
+    // en-CA formats date as YYYY-MM-DD, which matches <input type="date">/"time".
+    const date = `${get('year')}-${get('month')}-${get('day')}`
+    let hour = get('hour')
+    if (hour === '24') hour = '00' // some engines emit 24 for midnight
+    const time = `${hour}:${get('minute')}`
+    return { date, time }
+  }
+
+  const { date: today, time: nowTime } = melbourneNow()
+
   const [formData, setFormData] = useState({
     fullName: '',
     contactNumber: '',
@@ -41,6 +65,18 @@ export default function CakeOrderForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+
+    // Guard against a delivery date/time in the past (Melbourne time).
+    // Re-check at submit time in case the form sat open for a while.
+    const { date: nowDate, time: currentTime } = melbourneNow()
+    if (
+      formData.deliveryDate < nowDate ||
+      (formData.deliveryDate === nowDate && formData.deliveryTime && formData.deliveryTime < currentTime)
+    ) {
+      setError('Please choose a delivery date and time in the future (Melbourne time).')
+      return
+    }
+
     setSubmitting(true)
     setError('')
     try {
@@ -188,6 +224,7 @@ export default function CakeOrderForm() {
                   id="deliveryDate"
                   name="deliveryDate"
                   required
+                  min={today}
                   value={formData.deliveryDate}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
@@ -203,6 +240,7 @@ export default function CakeOrderForm() {
                   id="deliveryTime"
                   name="deliveryTime"
                   required
+                  min={formData.deliveryDate === today ? nowTime : undefined}
                   value={formData.deliveryTime}
                   onChange={handleChange}
                   className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
