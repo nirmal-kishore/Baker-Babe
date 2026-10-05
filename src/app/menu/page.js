@@ -146,7 +146,6 @@ export default function MenuPage() {
                     width={300}
                     height={340}
                     className="object-contain h-32 sm:h-44 w-auto"
-                    unoptimized
                   />
                 </div>
                 <div className="p-4 sm:p-6 border-t border-baker-soft-pink">
@@ -202,7 +201,6 @@ export default function MenuPage() {
                     width={300}
                     height={300}
                     className="object-contain h-28 sm:h-40 w-auto"
-                    unoptimized
                   />
                 </div>
                 <div className="p-4 sm:p-6 border-t border-baker-soft-pink">

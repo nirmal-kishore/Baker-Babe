@@ -96,7 +96,6 @@ function GalleryContent() {
               height={1402}
               className="rounded-2xl aspect-[4/5] object-cover w-full"
               priority
-              unoptimized
             />
           </div>
         </div>
@@ -174,7 +173,6 @@ function GalleryContent() {
                     width={500}
                     height={650}
                     className="aspect-[3/4] object-cover w-full"
-                    unoptimized
                   />
                 </div>
                 <p className="text-xs uppercase tracking-wider text-gray-500 pt-3">
@@ -231,7 +229,6 @@ function GalleryContent() {
                     width={200}
                     height={200}
                     className="rounded-xl aspect-square object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                    unoptimized
                   />
                 </a>
               ))}
@@ -250,7 +247,6 @@ function GalleryContent() {
                     width={200}
                     height={200}
                     className="rounded-xl aspect-square object-cover w-full h-full group-hover:scale-110 transition-transform duration-500"
-                    unoptimized
                   />
                 </a>
               ))}

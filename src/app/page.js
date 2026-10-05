@@ -148,7 +148,6 @@ export default function Home() {
           fill
           sizes="100vw"
           priority
-          unoptimized
           aria-hidden="true"
           className="hidden lg:block absolute inset-0 w-full h-full object-cover object-center z-0"
         />
@@ -233,7 +232,6 @@ export default function Home() {
                     width={1371}
                     height={1148}
                     priority
-                    unoptimized
                     className="w-full h-auto object-cover"
                   />
                 </motion.div>
@@ -277,7 +275,6 @@ export default function Home() {
                   width={600}
                   height={450}
                   className="aspect-[4/3] object-cover w-full"
-                  unoptimized
                 />
                 <div className="p-4 sm:p-6 flex flex-col flex-1">
                   <h3 className="font-playfair font-bold text-lg sm:text-xl">{cat.title}</h3>
@@ -313,7 +310,6 @@ export default function Home() {
               width={600}
               height={600}
               className="rounded-3xl aspect-square object-cover w-full"
-              unoptimized
             />
             <span className="bg-baker-pink text-white rounded-full px-4 py-2 absolute top-4 left-4 text-sm font-semibold">
               Est. 2019
@@ -424,7 +420,6 @@ export default function Home() {
               width={600}
               height={338}
               className="rounded-2xl aspect-video object-cover w-full"
-              unoptimized
             />
           </div>
         </motion.div>
@@ -590,7 +585,6 @@ export default function Home() {
                 alt="Instagram post"
                 fill
                 sizes="(max-width: 768px) 50vw, 20vw"
-                unoptimized
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-baker-pink/0 group-hover:bg-baker-pink/30 transition-colors duration-300 flex items-center justify-center">
@@ -611,7 +605,6 @@ export default function Home() {
                 alt="Instagram post"
                 fill
                 sizes="(max-width: 768px) 50vw, 20vw"
-                unoptimized
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-baker-pink/0 group-hover:bg-baker-pink/30 transition-colors duration-300 flex items-center justify-center">
@@ -645,7 +638,6 @@ export default function Home() {
                 alt="Instagram post"
                 fill
                 sizes="(max-width: 768px) 50vw, 20vw"
-                unoptimized
                 className="object-cover group-hover:scale-110 transition-transform duration-500"
               />
               <div className="absolute inset-0 bg-baker-pink/0 group-hover:bg-baker-pink/30 transition-colors duration-300 flex items-center justify-center">

@@ -110,7 +110,6 @@ export default function WorkshopPage() {
               width={600}
               height={500}
               className="rounded-3xl w-full h-auto object-cover"
-              unoptimized
             />
           </motion.div>
         </div>
@@ -172,7 +171,6 @@ export default function WorkshopPage() {
               width={600}
               height={500}
               className="rounded-3xl w-full aspect-[4/5] object-cover object-bottom"
-              unoptimized
             />
           </motion.div>
           <motion.div
@@ -386,7 +384,6 @@ export default function WorkshopPage() {
                   fill
                   sizes="(max-width: 640px) 100vw, 33vw"
                   className="rounded-2xl object-cover"
-                  unoptimized
                 />
               </motion.div>
             ))}

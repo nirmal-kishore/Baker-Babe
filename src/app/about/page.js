@@ -114,7 +114,6 @@ export default function AboutPage() {
                 width={600}
                 height={700}
                 className="w-full h-auto object-cover"
-                unoptimized
               />
             </div>
           </motion.div>
@@ -138,7 +137,6 @@ export default function AboutPage() {
                 width={500}
                 height={667}
                 className="w-full h-full object-cover"
-                unoptimized
               />
             </div>
           </motion.div>
