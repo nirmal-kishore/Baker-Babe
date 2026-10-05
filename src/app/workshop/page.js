@@ -36,7 +36,10 @@ export default function WorkshopPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
+    // Contact number: allow only digits, spaces, and + - ( ) so letters can't be typed.
+    const nextValue =
+      name === 'contactNumber' ? value.replace(/[^0-9+\-() ]/g, '') : value
+    setFormData((prev) => ({ ...prev, [name]: nextValue }))
   }
 
   const handleSubmit = async (e) => {
@@ -262,6 +265,7 @@ export default function WorkshopPage() {
                     id="fullName"
                     name="fullName"
                     required
+                    maxLength={60}
                     value={formData.fullName}
                     onChange={handleChange}
                     placeholder="Enter your full name"
@@ -280,6 +284,9 @@ export default function WorkshopPage() {
                     required
                     value={formData.email}
                     onChange={handleChange}
+                    maxLength={100}
+                    pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                    title="Please enter a valid email address, e.g. name@example.com"
                     placeholder="your@email.com"
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
                   />
@@ -296,6 +303,10 @@ export default function WorkshopPage() {
                     required
                     value={formData.contactNumber}
                     onChange={handleChange}
+                    inputMode="tel"
+                    maxLength={20}
+                    pattern="[0-9+\-() ]{6,}"
+                    title="Please enter a valid phone number (digits only, e.g. 0410 730 227)"
                     placeholder="0410 730 227"
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
                   />
@@ -309,11 +320,15 @@ export default function WorkshopPage() {
                     id="message"
                     name="message"
                     rows={4}
+                    maxLength={3000}
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Tell us what you'd like to learn, preferred timing, group size, or any questions..."
                     className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition resize-none"
                   />
+                  <p className="text-xs text-gray-400 text-right mt-1">
+                    {formData.message.length} / 3000
+                  </p>
                 </div>
 
                 {error && (
@@ -355,7 +370,7 @@ export default function WorkshopPage() {
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 max-w-5xl mx-auto">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 max-w-5xl mx-auto">
             {cakeImages.workshop.map((src, index) => (
               <motion.div
                 key={index}

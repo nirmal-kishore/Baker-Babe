@@ -7,6 +7,7 @@ import { motion, AnimatePresence } from 'motion/react';
 import { Star, ChevronDown, Camera, Heart, ArrowRight } from 'lucide-react';
 import { FloatingBlobs, FloatingHearts, WaveDivider } from '@/components/Decorations';
 import { cakeImages } from '@/lib/cakeImages';
+import CakeOrderForm from '@/components/CakeOrderForm';
 
 /* ───────────────────────── Data ───────────────────────── */
 
@@ -36,10 +37,10 @@ const categories = [
     description: 'Sweet, adorable cakes to welcome the newest little arrival.',
   },
   {
-    title: 'Corporate',
+    title: 'Events',
     key: 'corporate',
     image: cakeImages.corporate[0],
-    description: 'Professional cakes and treats for launches, milestones, and events.',
+    description: 'Show-stopping cakes and treats for launches, milestones, and corporate events.',
   },
   {
     title: 'Festive & Seasonal',
@@ -52,6 +53,12 @@ const categories = [
     key: 'desserts',
     image: cakeImages.desserts[0],
     description: 'A sweet selection of handcrafted desserts to round off any celebration.',
+  },
+  {
+    title: 'Mini Cakes',
+    key: 'minicakes',
+    image: cakeImages.minicakes[0],
+    description: 'Adorable bite-sized cakes — perfectly portioned treats packed with big flavour.',
   },
 ];
 
@@ -257,12 +264,12 @@ export default function Home() {
             What We Bake
           </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 mt-12">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8 mt-12">
             {categories.map((cat) => (
               <motion.div
                 key={cat.title}
                 whileHover={{ scale: 1.03 }}
-                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow"
+                className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow flex flex-col"
               >
                 <Image
                   src={cat.image}
@@ -272,12 +279,12 @@ export default function Home() {
                   className="aspect-[4/3] object-cover w-full"
                   unoptimized
                 />
-                <div className="p-6">
-                  <h3 className="font-playfair font-bold text-xl">{cat.title}</h3>
-                  <p className="text-sm text-gray-600 mt-2">{cat.description}</p>
+                <div className="p-4 sm:p-6 flex flex-col flex-1">
+                  <h3 className="font-playfair font-bold text-lg sm:text-xl">{cat.title}</h3>
+                  <p className="hidden sm:block text-sm text-gray-600 mt-2">{cat.description}</p>
                   <Link
                     href={`/gallery?category=${cat.key}`}
-                    className="text-baker-pink text-sm font-semibold mt-4 inline-block hover:underline"
+                    className="text-baker-pink text-sm font-semibold mt-auto pt-4 inline-block hover:underline"
                   >
                     Explore →
                   </Link>
@@ -515,6 +522,28 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ─── Section 7b: Order a Cake form ─── */}
+      <section id="order" className="py-20 bg-baker-soft-pink scroll-mt-24">
+        <div className="max-w-4xl mx-auto px-4">
+          <div className="text-center mb-10">
+            <p className="text-baker-pink text-sm tracking-wider uppercase font-semibold">
+              · ORDER ONLINE ·
+            </p>
+            <h2 className="font-playfair text-4xl font-bold text-baker-dark mt-3">
+              Order Your Dream Cake
+            </h2>
+            <p className="font-script text-2xl text-baker-pink mt-2">
+              Made with love, just for you!
+            </p>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              Tell us about your dream cake and we&apos;ll bring it to life — fill in the
+              details below and we&apos;ll get back to you with a quote.
+            </p>
+          </div>
+          <CakeOrderForm />
+        </div>
+      </section>
+
       {/* ─── Section 8: Instagram Grid ─── */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
@@ -548,12 +577,12 @@ export default function Home() {
 
           {/* Instagram-style 5-card grid */}
           <div className="grid grid-cols-2 md:grid-cols-5 gap-4 mt-12">
-            {/* Image 1 */}
+            {/* Image 1 → Reel: colourful children's cake */}
             <a
-              href="https://www.instagram.com/baker_babe27/"
+              href="https://www.instagram.com/reel/DZhGJhxs6BW/?stkn=Z2t4NHBvcWswbm83"
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View Baker Babe on Instagram"
+              aria-label="Watch Baker Babe reel: colourful children's cake"
               className="relative group overflow-hidden rounded-2xl aspect-square block"
             >
               <Image
@@ -569,12 +598,12 @@ export default function Home() {
               </div>
             </a>
 
-            {/* Image 2 */}
+            {/* Image 2 → Reel: white and gold birthday cake */}
             <a
-              href="https://www.instagram.com/baker_babe27/"
+              href="https://www.instagram.com/reel/Dc0aFwps6za/?stkn=MWt0bGhncnd5ZDQ5cA=="
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View Baker Babe on Instagram"
+              aria-label="Watch Baker Babe reel: white and gold birthday cake"
               className="relative group overflow-hidden rounded-2xl aspect-square block"
             >
               <Image
@@ -590,19 +619,25 @@ export default function Home() {
               </div>
             </a>
 
-            {/* Quote Card */}
-            <div className="bg-white rounded-2xl aspect-square flex flex-col items-center justify-center p-6 text-center">
+            {/* Quote Card → Reel: "Baked with Love" graphic */}
+            <a
+              href="https://www.instagram.com/reel/DXMI9hEE67f/?stkn=bnpzMjJxMHBzb29s"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Watch Baker Babe reel: Baked with Love"
+              className="bg-white rounded-2xl aspect-square flex flex-col items-center justify-center p-6 text-center hover:opacity-90 transition-opacity"
+            >
               <p className="font-script text-baker-pink text-2xl">Baked with</p>
               <p className="font-playfair font-bold text-3xl mt-1">Love</p>
               <Heart className="size-6 text-baker-pink fill-baker-pink mt-3" />
-            </div>
+            </a>
 
-            {/* Image 3 */}
+            {/* Image 3 → Reel: floral gold cake */}
             <a
-              href="https://www.instagram.com/baker_babe27/"
+              href="https://www.instagram.com/reel/DcsgNRxzRRk/?stkn=MXVkejU1c3F6eWo4OA=="
               target="_blank"
               rel="noopener noreferrer"
-              aria-label="View Baker Babe on Instagram"
+              aria-label="Watch Baker Babe reel: floral gold cake"
               className="relative group overflow-hidden rounded-2xl aspect-square block"
             >
               <Image

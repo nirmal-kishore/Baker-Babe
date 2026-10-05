@@ -128,7 +128,7 @@ export default function MenuPage() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {cakes.map((cake, i) => (
               <motion.div
                 key={cake.name}
@@ -139,18 +139,18 @@ export default function MenuPage() {
                 whileHover={{ scale: 1.03 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow"
               >
-                <div className="bg-baker-cream flex items-center justify-center p-6">
+                <div className="bg-baker-cream flex items-center justify-center p-3 sm:p-6">
                   <Image
                     src={cake.image}
                     alt={cake.name}
                     width={300}
                     height={340}
-                    className="object-contain h-44 w-auto"
+                    className="object-contain h-32 sm:h-44 w-auto"
                     unoptimized
                   />
                 </div>
-                <div className="p-6 border-t border-baker-soft-pink">
-                  <h3 className="font-playfair font-bold text-xl text-baker-dark">
+                <div className="p-4 sm:p-6 border-t border-baker-soft-pink">
+                  <h3 className="font-playfair font-bold text-base sm:text-xl text-baker-dark">
                     {cake.name}
                   </h3>
                   <ul className="mt-3 space-y-1.5">
@@ -184,7 +184,7 @@ export default function MenuPage() {
             </h2>
           </motion.div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {brownies.map((brownie, i) => (
               <motion.div
                 key={brownie.name}
@@ -195,18 +195,18 @@ export default function MenuPage() {
                 whileHover={{ scale: 1.03 }}
                 className="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-xl transition-shadow text-center"
               >
-                <div className="bg-baker-cream flex items-center justify-center p-6">
+                <div className="bg-baker-cream flex items-center justify-center p-3 sm:p-6">
                   <Image
                     src={brownie.image}
                     alt={brownie.name}
                     width={300}
                     height={300}
-                    className="object-contain h-40 w-auto"
+                    className="object-contain h-28 sm:h-40 w-auto"
                     unoptimized
                   />
                 </div>
-                <div className="p-6 border-t border-baker-soft-pink">
-                  <h3 className="font-playfair font-bold text-lg text-baker-dark">
+                <div className="p-4 sm:p-6 border-t border-baker-soft-pink">
+                  <h3 className="font-playfair font-bold text-base sm:text-lg text-baker-dark">
                     {brownie.name}
                   </h3>
                   {brownie.tag && (

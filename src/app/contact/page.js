@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { motion } from 'motion/react'
-import { Phone, Mail, MapPin, Clock, Send, CheckCircle } from 'lucide-react'
+import { Phone, Mail, MapPin, Clock, Send, CheckCircle, ArrowUpRight } from 'lucide-react'
 import { submitToWeb3Forms } from '@/lib/web3forms'
 
 function Instagram({ className, ...props }) {
@@ -21,6 +21,14 @@ function Facebook({ className, ...props }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" {...props}>
       <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+    </svg>
+  )
+}
+
+function WhatsApp({ className, ...props }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" {...props}>
+      <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885M20.52 3.449C18.24 1.245 15.24.044 12.045.044 5.463.044.104 5.403.101 11.986c0 2.096.549 4.14 1.595 5.945L0 24l6.335-1.652a11.96 11.96 0 0 0 5.71 1.447h.006c6.585 0 11.946-5.36 11.949-11.945a11.9 11.9 0 0 0-3.48-8.411" />
     </svg>
   )
 }
@@ -65,9 +73,12 @@ export default function ContactPage() {
 
   const handleChange = (e) => {
     const { name, value } = e.target
+    // Phone: allow only digits, spaces, and + - ( ) so letters can't be typed.
+    const nextValue =
+      name === 'phone' ? value.replace(/[^0-9+\-() ]/g, '') : value
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: nextValue,
     }))
   }
 
@@ -144,17 +155,28 @@ export default function ContactPage() {
                   transition={{ duration: 0.4, delay: index * 0.1 }}
                   className="bg-white rounded-xl p-6 flex items-start gap-4 shadow-sm"
                 >
-                  <div className="w-12 h-12 bg-baker-soft-pink rounded-full flex items-center justify-center flex-shrink-0">
-                    <info.icon className="w-5 h-5 text-baker-pink" />
-                  </div>
+                  {info.href ? (
+                    <a
+                      href={info.href}
+                      aria-label={info.title === 'Phone' ? 'Call us' : 'Email us'}
+                      className="w-12 h-12 bg-baker-soft-pink rounded-full flex items-center justify-center flex-shrink-0 hover:bg-baker-pink group transition"
+                    >
+                      <info.icon className="w-5 h-5 text-baker-pink group-hover:text-white transition" />
+                    </a>
+                  ) : (
+                    <div className="w-12 h-12 bg-baker-soft-pink rounded-full flex items-center justify-center flex-shrink-0">
+                      <info.icon className="w-5 h-5 text-baker-pink" />
+                    </div>
+                  )}
                   <div>
                     <h3 className="font-semibold text-baker-dark">{info.title}</h3>
                     {info.href ? (
                       <a
                         href={info.href}
-                        className="text-gray-600 mt-1 hover:text-baker-pink transition"
+                        className="text-gray-600 mt-1 hover:text-baker-pink transition inline-flex items-center gap-1.5 group"
                       >
                         {info.value}
+                        <ArrowUpRight className="w-3.5 h-3.5 text-baker-pink opacity-0 group-hover:opacity-100 transition" />
                       </a>
                     ) : (
                       <p className="text-gray-600 mt-1 whitespace-pre-line">{info.value}</p>
@@ -189,6 +211,15 @@ export default function ContactPage() {
                   className="w-12 h-12 bg-baker-soft-pink rounded-full flex items-center justify-center hover:bg-baker-pink hover:text-white text-baker-pink transition"
                 >
                   <Facebook className="w-5 h-5" />
+                </a>
+                <a
+                  href="https://wa.me/61410730227"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="w-12 h-12 bg-baker-soft-pink rounded-full flex items-center justify-center hover:bg-baker-pink hover:text-white text-baker-pink transition"
+                >
+                  <WhatsApp className="w-5 h-5" />
                 </a>
               </div>
             </motion.div>
@@ -236,6 +267,7 @@ export default function ContactPage() {
                         id="name"
                         name="name"
                         required
+                        maxLength={60}
                         value={formData.name}
                         onChange={handleChange}
                         placeholder="Your full name"
@@ -254,6 +286,9 @@ export default function ContactPage() {
                         required
                         value={formData.email}
                         onChange={handleChange}
+                        maxLength={100}
+                        pattern="[^@\s]+@[^@\s]+\.[^@\s]+"
+                        title="Please enter a valid email address, e.g. name@example.com"
                         placeholder="your@email.com"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
                       />
@@ -269,6 +304,10 @@ export default function ContactPage() {
                         name="phone"
                         value={formData.phone}
                         onChange={handleChange}
+                        inputMode="tel"
+                        maxLength={20}
+                        pattern="[0-9+\-() ]{6,}"
+                        title="Please enter a valid phone number (digits only, e.g. 0410 730 227)"
                         placeholder="0410 730 227"
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
                       />
@@ -283,11 +322,15 @@ export default function ContactPage() {
                         name="message"
                         rows={5}
                         required
+                        maxLength={3000}
                         value={formData.message}
                         onChange={handleChange}
                         placeholder="Tell us how we can help you..."
                         className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition resize-none"
                       />
+                      <p className="text-xs text-gray-400 text-right mt-1">
+                        {formData.message.length} / 3000
+                      </p>
                     </div>
 
                     {error && (

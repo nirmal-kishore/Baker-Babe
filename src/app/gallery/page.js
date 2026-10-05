@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, Suspense } from 'react';
+import { useState, useRef, useEffect, Suspense } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
@@ -17,6 +17,34 @@ function GalleryContent() {
     ? categoryParam
     : 'all';
   const [activeFilter, setActiveFilter] = useState(initialFilter);
+
+  // Track horizontal scroll position of the filter bar so we can show
+  // edge fade hints ("there's more this way") — critical on mobile where
+  // only 2-3 pills are visible and scrollability isn't otherwise obvious.
+  const scrollRef = useRef(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const updateScrollHints = () => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 1);
+    // 1px tolerance for sub-pixel rounding at the far right edge.
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 1);
+  };
+
+  useEffect(() => {
+    updateScrollHints();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener('scroll', updateScrollHints, { passive: true });
+    window.addEventListener('resize', updateScrollHints);
+    return () => {
+      el.removeEventListener('scroll', updateScrollHints);
+      window.removeEventListener('resize', updateScrollHints);
+    };
+  }, []);
 
   // "All Cakes" shows a curated 3 per category; a specific filter shows all of that category.
   let filteredItems;
@@ -76,20 +104,45 @@ function GalleryContent() {
 
       {/* ─── Section 2: Interactive Category Filter Bar ─── */}
       <div className="max-w-7xl mx-auto px-4 py-12">
-        <div className="flex gap-3 overflow-x-auto scrollbar-none pb-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-          {galleryCategories.map((cat) => (
-            <button
-              key={cat.key}
-              onClick={() => setActiveFilter(cat.key)}
-              className={`whitespace-nowrap rounded-full px-6 py-2 text-sm font-medium transition ${
-                activeFilter === cat.key
-                  ? 'bg-baker-pink text-white'
-                  : 'bg-white border border-gray-200 text-baker-dark hover:border-baker-pink hover:text-baker-pink'
-              }`}
-            >
-              {cat.label}
-            </button>
-          ))}
+        <div className="relative">
+          {/* Left edge fade — appears once the user has scrolled right. */}
+          <div
+            className={`pointer-events-none absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-baker-cream to-transparent transition-opacity duration-300 ${
+              canScrollLeft ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-hidden="true"
+          />
+
+          <div
+            ref={scrollRef}
+            className="flex gap-3 overflow-x-auto scrollbar-none pb-1 pr-12 snap-x scroll-smooth"
+            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          >
+            {galleryCategories.map((cat) => (
+              <button
+                key={cat.key}
+                onClick={() => setActiveFilter(cat.key)}
+                className={`snap-start whitespace-nowrap rounded-full px-6 py-2 text-sm font-medium transition ${
+                  activeFilter === cat.key
+                    ? 'bg-baker-pink text-white'
+                    : 'bg-white border border-gray-200 text-baker-dark hover:border-baker-pink hover:text-baker-pink'
+                }`}
+              >
+                {cat.label}
+              </button>
+            ))}
+          </div>
+
+          {/* Right edge fade — softens the last pill so it reads as "there's
+              more this way". The pr-12 above guarantees a peek of the next
+              pill instead of a clean cut, which is the real scroll cue.
+              Hidden once the user reaches the end. */}
+          <div
+            className={`pointer-events-none absolute right-0 top-0 bottom-0 w-12 z-10 bg-gradient-to-l from-baker-cream via-baker-cream/80 to-transparent transition-opacity duration-300 ${
+              canScrollRight ? 'opacity-100' : 'opacity-0'
+            }`}
+            aria-hidden="true"
+          />
         </div>
       </div>
 
@@ -102,7 +155,7 @@ function GalleryContent() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8"
+            className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8"
           >
             {filteredItems.map((item) => (
               <motion.div

@@ -26,6 +26,7 @@ export const cakeImages = {
     '/cakes/birthday/baker-babe-cleaned-076.jpg',
   ],
   custom: [
+    '/cakes/custom/custom-barbie.jpg',
     '/cakes/custom/baker-babe-cleaned-002.jpg',
     '/cakes/custom/baker-babe-cleaned-013.jpg',
     '/cakes/custom/baker-babe-cleaned-018.jpg',
@@ -42,8 +43,6 @@ export const cakeImages = {
     '/cakes/custom/baker-babe-cleaned-060.jpg',
     '/cakes/custom/baker-babe-cleaned-061.jpg',
     '/cakes/custom/baker-babe-cleaned-075.jpg',
-    '/cakes/custom/baker-babe-cleaned-077.jpg',
-    '/cakes/custom/baker-babe-cleaned-078.jpg',
   ],
   wedding: [
     '/cakes/wedding/baker-babe-cleaned-021.jpg',
@@ -54,6 +53,8 @@ export const cakeImages = {
     '/cakes/wedding/baker-babe-cleaned-026.jpg',
   ],
   'baby-shower': [
+    '/cakes/baby-shower/baby-shower-oh-baby.jpg',
+    '/cakes/baby-shower/baby-shower-princess-sia.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-010.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-016.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-023.jpg',
@@ -84,6 +85,12 @@ export const cakeImages = {
     '/cakes/desserts/baker-babe-cleaned-042.jpg',
     '/cakes/desserts/baker-babe-cleaned-048.jpg',
   ],
+  minicakes: [
+    '/cakes/minicakes/minicake-01.jpg',
+    '/cakes/minicakes/minicake-02.jpg',
+    '/cakes/minicakes/minicake-03.jpg',
+    '/cakes/minicakes/minicake-04.jpg',
+  ],
   workshop: [
     '/cakes/workshop/baker-babe-cleaned-070.jpg',
     '/cakes/workshop/baker-babe-cleaned-071.jpg',
@@ -98,9 +105,10 @@ export const galleryCategories = [
   { label: 'Custom & Themed', key: 'custom' },
   { label: 'Wedding & Engagement', key: 'wedding' },
   { label: 'Baby Shower', key: 'baby-shower' },
-  { label: 'Corporate', key: 'corporate' },
+  { label: 'Events', key: 'corporate' },
   { label: 'Festive & Seasonal', key: 'festive' },
   { label: 'Desserts', key: 'desserts' },
+  { label: 'Mini Cakes', key: 'minicakes' },
 ]
 
 // Human-readable category names for display tags on cards.
@@ -109,16 +117,17 @@ export const categoryLabels = {
   custom: 'Custom & Themed',
   wedding: 'Wedding & Engagement',
   'baby-shower': 'Baby Shower',
-  corporate: 'Corporate',
+  corporate: 'Events',
   festive: 'Festive & Seasonal',
   desserts: 'Desserts',
+  minicakes: 'Mini Cakes',
   workshop: 'Workshop',
 }
 
 // Flattened gallery items across all display categories (excludes workshop),
 // each image used exactly once. Ordered interleaved so the grid looks varied.
 export const galleryItems = (() => {
-  const order = ['birthday', 'custom', 'wedding', 'baby-shower', 'corporate', 'festive', 'desserts']
+  const order = ['birthday', 'custom', 'wedding', 'baby-shower', 'corporate', 'festive', 'desserts', 'minicakes']
   const items = []
   // Interleave all images across categories for a varied "All Cakes" view.
   let idx = 0
