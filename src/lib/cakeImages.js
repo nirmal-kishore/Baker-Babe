@@ -27,6 +27,7 @@ export const cakeImages = {
   ],
   custom: [
     '/cakes/custom/custom-barbie.jpg',
+    '/cakes/custom/custom-princess-sia.jpg',
     '/cakes/custom/baker-babe-cleaned-002.jpg',
     '/cakes/custom/baker-babe-cleaned-013.jpg',
     '/cakes/custom/baker-babe-cleaned-018.jpg',
@@ -54,7 +55,6 @@ export const cakeImages = {
   ],
   'baby-shower': [
     '/cakes/baby-shower/baby-shower-oh-baby.jpg',
-    '/cakes/baby-shower/baby-shower-princess-sia.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-010.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-016.jpg',
     '/cakes/baby-shower/baker-babe-cleaned-023.jpg',
