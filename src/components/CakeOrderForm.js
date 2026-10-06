@@ -340,7 +340,13 @@ export default function CakeOrderForm() {
                     name="cakeSize"
                     value={formData.cakeSize}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
+                    className="w-full appearance-none bg-no-repeat pl-4 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232E2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
+                      backgroundPosition: 'right 0.9rem center',
+                      backgroundSize: '18px',
+                    }}
                   >
                     <option value="">Select a size</option>
                     <option value="6inch">6 inch (serves 8-10)</option>
@@ -361,7 +367,13 @@ export default function CakeOrderForm() {
                     name="flavour"
                     value={formData.flavour}
                     onChange={handleChange}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
+                    className="w-full appearance-none bg-no-repeat pl-4 pr-10 py-3 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-baker-pink focus:border-transparent transition"
+                    style={{
+                      backgroundImage:
+                        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 24 24' fill='none' stroke='%232E2626' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E\")",
+                      backgroundPosition: 'right 0.9rem center',
+                      backgroundSize: '18px',
+                    }}
                   >
                     <option value="">Select a flavour</option>
                     <option value="Cold Coffee Cake">Cold Coffee Cake</option>
