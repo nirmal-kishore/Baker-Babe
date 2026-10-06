@@ -10,6 +10,7 @@ const quickLinks = [
   { label: 'Workshop', href: '/workshop' },
   { label: 'Contact Us', href: '/contact' },
   { label: 'Order a Cake', href: '/booking' },
+  { label: 'Terms & Conditions', href: '/terms' },
 ]
 
 const cakeLinks = [
@@ -205,14 +206,14 @@ export default function Footer() {
                 </a>
               </li>
               <li className="flex items-start gap-3">
-                <a href="mailto:bakerbabe@gmail.com" aria-label="Email us" className="mt-0.5 shrink-0 hover:opacity-70 transition">
+                <a href="mailto:admin@bakerbabe.au" aria-label="Email us" className="mt-0.5 shrink-0 hover:opacity-70 transition">
                   <Mail size={18} className="text-baker-pink" />
                 </a>
                 <a
-                  href="mailto:bakerbabe@gmail.com"
+                  href="mailto:admin@bakerbabe.au"
                   className="text-sm text-gray-600 hover:text-baker-pink transition"
                 >
-                  bakerbabe@gmail.com
+                  admin@bakerbabe.au
                 </a>
               </li>
               <li className="flex items-start gap-3">

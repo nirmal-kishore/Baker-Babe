@@ -524,6 +524,17 @@ export default function CakeOrderForm() {
                 {error}
               </p>
             )}
+            <p className="text-gray-500 text-sm text-center mb-4">
+              By submitting, you agree to our{' '}
+              <Link
+                href="/terms"
+                target="_blank"
+                className="text-baker-pink font-medium hover:underline"
+              >
+                Terms &amp; Conditions
+              </Link>
+              .
+            </p>
             <button
               type="submit"
               disabled={submitting || uploading}

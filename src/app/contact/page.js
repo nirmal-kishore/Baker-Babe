@@ -43,8 +43,8 @@ const contactInfo = [
   {
     icon: Mail,
     title: 'Email',
-    value: 'bakerbabe@gmail.com',
-    href: 'mailto:bakerbabe@gmail.com',
+    value: 'admin@bakerbabe.au',
+    href: 'mailto:admin@bakerbabe.au',
   },
   {
     icon: MapPin,
